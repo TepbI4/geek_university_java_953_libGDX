@@ -25,13 +25,16 @@ public class MyGdxGame extends ApplicationAdapter {
 		ScreenUtils.clear(1, 0, 0, 1);
 		batch.begin();
 
+		float x = Gdx.input.getX() - img.getWidth() / 2;
+		float y = Gdx.graphics.getHeight() - Gdx.input.getY() - img.getHeight() / 2;
+
 		if (Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)) {
 			clicksCount++;
 		}
 
 		Gdx.graphics.setTitle("Clicked " + clicksCount + " times.");
 
-		batch.draw(img, 0, 0);
+		batch.draw(img, x, y);
 		batch.end();
 	}
 	
