@@ -4,43 +4,52 @@ import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.ScreenUtils;
 
 public class MyGdxGame extends ApplicationAdapter {
 	SpriteBatch batch;
-	Texture img;
-	Integer clicksCount = 0;
-	String originalTitle;
+	RunAnimation runAnimation;
+	Animation<TextureRegion> animation_run_left;
+	int xCnt = 0;
+	int yCnt = 0;
+	float time;
+	float x = 0f;
+	boolean direction = true;
 	
 	@Override
 	public void create () {
 		batch = new SpriteBatch();
-		img = new Texture("witcher.jpg");
-		Gdx.input.setCursorPosition(img.getWidth() / 2, Gdx.graphics.getHeight() - img.getHeight() / 2);
+		runAnimation = new RunAnimation("hero_run.png", 8, 2, Animation.PlayMode.LOOP);
 	}
 
 	@Override
 	public void render () {
-		ScreenUtils.clear(1, 0, 0, 1);
+		ScreenUtils.clear(1, 1, 1, 1);
 		batch.begin();
-
-		float x = Gdx.input.getX() - img.getWidth() / 2;
-		float y = Gdx.graphics.getHeight() - Gdx.input.getY() - img.getHeight() / 2;
-
-		if (Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)) {
-			clicksCount++;
+		runAnimation.setTime(Gdx.graphics.getDeltaTime());
+		if (direction && x >= 0 && x + runAnimation.getFrame().getRegionWidth() <= Gdx.graphics.getWidth()) {
+			if (runAnimation.getFrame().isFlipX()) runAnimation.getFrame().flip(direction, false);
+			batch.draw(runAnimation.getFrame(), x,0);
+			x = x + 15;
+		} else {
+			direction = false;
 		}
-
-		Gdx.graphics.setTitle("Clicked " + clicksCount + " times.");
-
-		batch.draw(img, x, y);
+		if (!direction && x > 0) {
+			if (!runAnimation.getFrame().isFlipX()) runAnimation.getFrame().flip(!direction, false);
+			batch.draw(runAnimation.getFrame(), x,0);
+			x = x - 15;
+		} else {
+			direction = true;
+		}
 		batch.end();
 	}
 	
 	@Override
 	public void dispose () {
 		batch.dispose();
-		img.dispose();
+		runAnimation.dispose();
 	}
 }
