@@ -31,14 +31,14 @@ public class MyGdxGame extends ApplicationAdapter {
 		batch.begin();
 		runAnimation.setTime(Gdx.graphics.getDeltaTime());
 		if (direction && x >= 0 && x + runAnimation.getFrame().getRegionWidth() <= Gdx.graphics.getWidth()) {
-			runAnimation.getFrame().flip(!direction, false);
+			if (runAnimation.getFrame().isFlipX()) runAnimation.getFrame().flip(direction, false);
 			batch.draw(runAnimation.getFrame(), x,0);
 			x = x + 15;
 		} else {
 			direction = false;
 		}
 		if (!direction && x > 0) {
-			runAnimation.getFrame().flip(!direction, false);
+			if (!runAnimation.getFrame().isFlipX()) runAnimation.getFrame().flip(!direction, false);
 			batch.draw(runAnimation.getFrame(), x,0);
 			x = x - 15;
 		} else {
