@@ -22,7 +22,7 @@ public class MyGdxGame extends ApplicationAdapter {
 	@Override
 	public void create () {
 		batch = new SpriteBatch();
-		runAnimation = new RunAnimation("hero_run.png", 8, 2, Animation.PlayMode.LOOP);
+		runAnimation = new RunAnimation("atlas/hero_run_atlas.atlas", Animation.PlayMode.LOOP);
 	}
 
 	@Override
